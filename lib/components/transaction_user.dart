@@ -13,7 +13,7 @@ class TransactionUser extends StatefulWidget {
 class _TransactionUserState extends State<TransactionUser> {
   @override
   Widget build(BuildContext context) {
-    final List<Transaction> transactions = [
+    final List<Transaction> _transactions = [
       Transaction(
         id: 't1',
         title: 'Novo tênis Adidas',
@@ -31,7 +31,7 @@ class _TransactionUserState extends State<TransactionUser> {
     return Column(
       children: [
         TransactionList(
-          transactions: transactions,
+          transactions: _transactions,
         ),
         TransactionForm(),
       ],
