@@ -27,6 +27,9 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textController = TextEditingController();
+    final valueController = TextEditingController();
+
     final List<Transaction> _transactions = [
       Transaction(
         id: 't1',
@@ -110,13 +113,15 @@ class MyHomePage extends StatelessWidget {
               padding: const EdgeInsets.all(10.0),
               child: Column(
                 children: [
-                  const TextField(
-                    decoration: InputDecoration(
+                  TextField(
+                    controller: textController,
+                    decoration: const InputDecoration(
                       labelText: 'Título',
                     ),
                   ),
-                  const TextField(
-                    decoration: InputDecoration(
+                  TextField(
+                    controller: valueController,
+                    decoration: const InputDecoration(
                       labelText: 'Valor R\$:',
                     ),
                   ),
