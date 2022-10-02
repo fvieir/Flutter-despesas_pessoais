@@ -6,22 +6,29 @@ import 'package:expenses/components/transaction_list.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'models/trasanctions.dart';
 
-void main() => runApp(const Expenses());
+void main() => runApp(Expenses());
 
 class Expenses extends StatelessWidget {
-  const Expenses({super.key});
+  Expenses({super.key});
+  final ThemeData tema = ThemeData();
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      localizationsDelegates: [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: [Locale('pt', 'BR')],
-      home: MyHomePage(),
-    );
+    return MaterialApp(
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: const [
+          Locale('pt', 'BR')
+        ],
+        home: const MyHomePage(),
+        theme: tema.copyWith(
+            colorScheme: tema.colorScheme.copyWith(
+          primary: Colors.purple,
+          secondary: Colors.amber,
+        )));
   }
 }
 
