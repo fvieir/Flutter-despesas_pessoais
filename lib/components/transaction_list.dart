@@ -42,11 +42,14 @@ class TransactionList extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(tr.title,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        )),
+                    Text(
+                      tr.title,
+                      style: Theme.of(context).textTheme.titleLarge,
+                      // const TextStyle(
+                      //   fontSize: 16,
+                      //   fontWeight: FontWeight.bold,
+                      // ),
+                    ),
                     Text(
                       DateFormat('d MMM y', 'pt-BR').format(tr.date),
                       style: const TextStyle(
