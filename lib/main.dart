@@ -83,7 +83,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.purple,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         title: const Text('Despesas Pessoais'),
         actions: [
           IconButton(
@@ -108,7 +108,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.purple,
+        backgroundColor: Theme.of(context).colorScheme.secondary,
         child: const Icon(Icons.add),
         onPressed: () => _openTransactionFormModal(context),
       ),
