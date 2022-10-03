@@ -62,7 +62,7 @@ class _MyHomePageState extends State<MyHomePage> {
       title: 'Novo tênis Adidas',
       value: 370.76,
       date: DateTime.now().subtract(
-        const Duration(days: 1),
+        const Duration(days: 10),
       ),
     ),
     Transaction(
@@ -78,6 +78,14 @@ class _MyHomePageState extends State<MyHomePage> {
       date: DateTime.now(),
     ),
   ];
+
+  List<Transaction> get _recentTransactions {
+    return _transactions.where((tr) {
+      return tr.date.isAfter(DateTime.now().subtract(
+        const Duration(days: 7),
+      ));
+    }).toList();
+  }
 
   _addTransaction(String title, double value) {
     final newTransaction = Transaction(
@@ -120,7 +128,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Chart(recentTransaction: _transactions),
+            Chart(recentTransaction: _recentTransactions),
             TransactionList(transactions: _transactions),
           ],
         ),
