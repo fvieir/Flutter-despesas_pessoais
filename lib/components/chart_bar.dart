@@ -15,7 +15,11 @@ class ChartBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(value.toString()),
+        FittedBox(
+          child: Text(
+            value.toString(),
+          ),
+        ),
         const SizedBox(height: 5),
         SizedBox(
           height: 60,
