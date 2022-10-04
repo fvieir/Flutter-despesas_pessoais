@@ -36,49 +36,36 @@ class TransactionList extends StatelessWidget {
               itemBuilder: (context, index) {
                 final tr = transactions[index];
                 return Card(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.symmetric(
-                          vertical: 15,
-                          horizontal: 10,
-                        ),
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.purple.shade100,
-                            width: 2,
+                  elevation: 5,
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 5,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: ListTile(
+                      visualDensity: const VisualDensity(
+                        vertical: 0.5,
+                      ),
+                      leading: CircleAvatar(
+                        backgroundColor: Theme.of(context).colorScheme.primary,
+                        foregroundColor: Colors.white,
+                        radius: 30,
+                        child: Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: FittedBox(
+                            child: Text("R\$${tr.value.toStringAsFixed(2)}"),
                           ),
-                        ),
-                        padding: const EdgeInsets.all(10),
-                        child: Text(
-                          'R\$ ${tr.value.toStringAsFixed(2)}',
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                              color: Colors.purple),
                         ),
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            tr.title,
-                            style: Theme.of(context).textTheme.titleLarge,
-                            // const TextStyle(
-                            //   fontSize: 16,
-                            //   fontWeight: FontWeight.bold,
-                            // ),
-                          ),
-                          Text(
-                            DateFormat('d MMM y', 'pt-BR').format(tr.date),
-                            style: const TextStyle(
-                              color: Colors.grey,
-                            ),
-                          ),
-                        ],
+                      title: Text(
+                        tr.title,
+                        style: Theme.of(context).textTheme.titleLarge,
                       ),
-                    ],
+                      subtitle: Text(
+                        DateFormat('d MMM y', 'pt-BR').format(tr.date),
+                      ),
+                    ),
                   ),
                 );
               },
