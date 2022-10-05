@@ -164,12 +164,26 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  void _setShowChart() {
+    setState(() {
+      _showChart = !_showChart;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    bool isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
+
     final appBar = AppBar(
       backgroundColor: Theme.of(context).colorScheme.primary,
       title: const Text('Despesas Pessoais'),
       actions: [
+        if (isLandscape)
+          IconButton(
+            onPressed: () => _setShowChart(),
+            icon: Icon(_showChart ? Icons.list : Icons.area_chart),
+          ),
         IconButton(
           onPressed: () => _openTransactionFormModal(context),
           icon: const Icon(Icons.add),
@@ -189,30 +203,32 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Exibir gráfico?',
-                  style: TextStyle(
-                    fontSize: Theme.of(context).textTheme.titleLarge!.fontSize,
-                  ),
-                ),
-                Switch(
-                    value: _showChart,
-                    onChanged: (newValue) {
-                      setState(() {
-                        _showChart = newValue;
-                      });
-                    }),
-              ],
-            ),
-            if (_showChart)
+            // if (isLandscape)
+            //   Row(
+            //     mainAxisAlignment: MainAxisAlignment.center,
+            //     children: [
+            //       Text(
+            //         'Exibir gráfico?',
+            //         style: TextStyle(
+            //           fontSize:
+            //               Theme.of(context).textTheme.titleLarge!.fontSize,
+            //         ),
+            //       ),
+            //       Switch(
+            //           value: _showChart,
+            //           onChanged: (newValue) {
+            //             setState(() {
+            //               _showChart = newValue;
+            //             });
+            //           }),
+            //     ],
+            //   ),
+            if (_showChart || !isLandscape)
               SizedBox(
-                height: avaibleHeight * 0.3,
+                height: avaibleHeight * (isLandscape ? 0.65 : 0.3),
                 child: Chart(recentTransaction: _recentTransactions),
               ),
-            if (!_showChart)
+            if (!_showChart || !isLandscape)
               SizedBox(
                 height: avaibleHeight * 0.7,
                 child: TransactionList(
