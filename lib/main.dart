@@ -60,7 +60,68 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<Transaction> _transactions = [];
+  final List<Transaction> _transactions = [
+    Transaction(
+      id: 't2',
+      title: 'Conta de água',
+      value: 711.3,
+      date: DateTime.now().subtract(
+        const Duration(
+          days: 1,
+        ),
+      ),
+    ),
+    Transaction(
+      id: 't2',
+      title: 'Conta de água',
+      value: 711.3,
+      date: DateTime.now().subtract(
+        const Duration(
+          days: 1,
+        ),
+      ),
+    ),
+    Transaction(
+      id: 't2',
+      title: 'Conta de água',
+      value: 711.3,
+      date: DateTime.now().subtract(
+        const Duration(
+          days: 1,
+        ),
+      ),
+    ),
+    Transaction(
+      id: 't2',
+      title: 'Conta de água',
+      value: 711.3,
+      date: DateTime.now().subtract(
+        const Duration(
+          days: 1,
+        ),
+      ),
+    ),
+    Transaction(
+      id: 't2',
+      title: 'Conta de água',
+      value: 711.3,
+      date: DateTime.now().subtract(
+        const Duration(
+          days: 1,
+        ),
+      ),
+    ),
+    Transaction(
+      id: 't2',
+      title: 'Conta de água',
+      value: 711.3,
+      date: DateTime.now().subtract(
+        const Duration(
+          days: 1,
+        ),
+      ),
+    ),
+  ];
 
   List<Transaction> get _recentTransactions {
     return _transactions.where((tr) {
@@ -102,25 +163,39 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final appBar = AppBar(
+      backgroundColor: Theme.of(context).colorScheme.primary,
+      title: const Text('Despesas Pessoais'),
+      actions: [
+        IconButton(
+          onPressed: () => _openTransactionFormModal(context),
+          icon: const Icon(Icons.add),
+        )
+      ],
+    );
+
+    final avaibleHeight = MediaQuery.of(context).size.height -
+        appBar.preferredSize.height -
+        MediaQuery.of(context).padding.top;
+
+    // MediaQuery.of(context).padding.top obtem altura do statusBar
+
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        title: const Text('Despesas Pessoais'),
-        actions: [
-          IconButton(
-            onPressed: () => _openTransactionFormModal(context),
-            icon: const Icon(Icons.add),
-          )
-        ],
-      ),
+      appBar: appBar,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Chart(recentTransaction: _recentTransactions),
-            TransactionList(
-              transactions: _transactions,
-              onRemove: _removeList,
+            SizedBox(
+              height: avaibleHeight * 0.3,
+              child: Chart(recentTransaction: _recentTransactions),
+            ),
+            SizedBox(
+              height: avaibleHeight * 0.7,
+              child: TransactionList(
+                transactions: _transactions,
+                onRemove: _removeList,
+              ),
             ),
           ],
         ),
