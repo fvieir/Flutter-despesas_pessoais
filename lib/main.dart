@@ -124,6 +124,8 @@ class _MyHomePageState extends State<MyHomePage> {
     ),
   ];
 
+  bool _showChart = false;
+
   List<Transaction> get _recentTransactions {
     return _transactions.where((tr) {
       return tr.date.isAfter(DateTime.now().subtract(
@@ -187,17 +189,37 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            SizedBox(
-              height: avaibleHeight * 0.3,
-              child: Chart(recentTransaction: _recentTransactions),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Exibir gráfico?',
+                  style: TextStyle(
+                    fontSize: Theme.of(context).textTheme.titleLarge!.fontSize,
+                  ),
+                ),
+                Switch(
+                    value: _showChart,
+                    onChanged: (newValue) {
+                      setState(() {
+                        _showChart = newValue;
+                      });
+                    }),
+              ],
             ),
-            SizedBox(
-              height: avaibleHeight * 0.7,
-              child: TransactionList(
-                transactions: _transactions,
-                onRemove: _removeList,
+            if (_showChart)
+              SizedBox(
+                height: avaibleHeight * 0.3,
+                child: Chart(recentTransaction: _recentTransactions),
               ),
-            ),
+            if (!_showChart)
+              SizedBox(
+                height: avaibleHeight * 0.7,
+                child: TransactionList(
+                  transactions: _transactions,
+                  onRemove: _removeList,
+                ),
+              ),
           ],
         ),
       ),
