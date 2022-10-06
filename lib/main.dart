@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:expenses/components/chart.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:expenses/components/transaction_form.dart';
 import 'package:expenses/components/transaction_list.dart';
@@ -28,7 +29,7 @@ class Expenses extends StatelessWidget {
       theme: tema.copyWith(
         colorScheme: tema.colorScheme.copyWith(
           primary: Colors.purple,
-          secondary: Colors.purple,
+          secondary: Colors.deepPurpleAccent,
         ),
         textTheme: tema.textTheme.copyWith(
           titleLarge: const TextStyle(
@@ -176,79 +177,80 @@ class _MyHomePageState extends State<MyHomePage> {
     MediaQueryData mediaQuery = MediaQuery.of(context);
     bool isLandscape = mediaQuery.orientation == Orientation.landscape;
 
+    Widget _getIconButton(IconData icon, Function() fn) {
+      return Platform.isIOS
+          ? GestureDetector(onTap: fn, child: Icon(icon))
+          : IconButton(onPressed: fn, icon: Icon(icon));
+    }
+
+    final actions = [
+      if (isLandscape)
+        _getIconButton(
+          (_showChart ? Icons.list : Icons.area_chart),
+          () => _setShowChart(),
+        ),
+      _getIconButton(
+        Platform.isAndroid ? CupertinoIcons.add : (Icons.add),
+        () => _openTransactionFormModal(context),
+      )
+    ];
+
     final appBar = AppBar(
       backgroundColor: Theme.of(context).colorScheme.primary,
       title: const Text('Despesas Pessoais'),
-      actions: [
-        if (isLandscape)
-          IconButton(
-            onPressed: () => _setShowChart(),
-            icon: Icon(_showChart ? Icons.list : Icons.area_chart),
-          ),
-        IconButton(
-          onPressed: () => _openTransactionFormModal(context),
-          icon: const Icon(Icons.add),
-        )
-      ],
+      actions: actions,
     );
 
     final avaibleHeight = mediaQuery.size.height -
         appBar.preferredSize.height -
         mediaQuery.padding.top;
 
+    final pageBody = SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          if (_showChart || !isLandscape)
+            SizedBox(
+              height: avaibleHeight * (isLandscape ? 0.65 : 0.3),
+              child: Chart(recentTransaction: _recentTransactions),
+            ),
+          if (!_showChart || !isLandscape)
+            SizedBox(
+              height: avaibleHeight * (isLandscape ? 1 : 0.7),
+              child: TransactionList(
+                transactions: _transactions,
+                onRemove: _removeList,
+              ),
+            ),
+        ],
+      ),
+    );
+
     // mediaQuery.padding.top obtem altura do statusBar
 
-    return Scaffold(
-      appBar: appBar,
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            // if (isLandscape)
-            //   Row(
-            //     mainAxisAlignment: MainAxisAlignment.center,
-            //     children: [
-            //       Text(
-            //         'Exibir gráfico?',
-            //         style: TextStyle(
-            //           fontSize:
-            //               Theme.of(context).textTheme.titleLarge!.fontSize,
-            //         ),
-            //       ),
-            //       Switch.adaptive(
-            //           activeColor: Theme.of(context).colorScheme.secondary,
-            //           value: _showChart,
-            //           onChanged: (newValue) {
-            //             setState(() {
-            //               _showChart = newValue;
-            //             });
-            //           }),
-            //     ],
-            //   ),
-            if (_showChart || !isLandscape)
-              SizedBox(
-                height: avaibleHeight * (isLandscape ? 0.65 : 0.3),
-                child: Chart(recentTransaction: _recentTransactions),
+    return Platform.isIOS
+        ? CupertinoPageScaffold(
+            navigationBar: CupertinoNavigationBar(
+              middle: const Text('Despesas Pessoais'),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: actions,
               ),
-            if (!_showChart || !isLandscape)
-              SizedBox(
-                height: avaibleHeight * (isLandscape ? 1 : 0.7),
-                child: TransactionList(
-                  transactions: _transactions,
-                  onRemove: _removeList,
-                ),
-              ),
-          ],
-        ),
-      ),
-      floatingActionButton: Platform.isIOS
-          ? Container()
-          : FloatingActionButton(
-              backgroundColor: Theme.of(context).colorScheme.secondary,
-              child: const Icon(Icons.add),
-              onPressed: () => _openTransactionFormModal(context),
             ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-    );
+            child: pageBody,
+          )
+        : Scaffold(
+            appBar: appBar,
+            body: pageBody,
+            floatingActionButton: Platform.isIOS
+                ? Container()
+                : FloatingActionButton(
+                    backgroundColor: Theme.of(context).colorScheme.secondary,
+                    child: const Icon(Icons.add),
+                    onPressed: () => _openTransactionFormModal(context),
+                  ),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerFloat,
+          );
   }
 }
