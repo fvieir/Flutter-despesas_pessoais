@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:expenses/components/chart.dart';
@@ -214,7 +215,8 @@ class _MyHomePageState extends State<MyHomePage> {
             //               Theme.of(context).textTheme.titleLarge!.fontSize,
             //         ),
             //       ),
-            //       Switch(
+            //       Switch.adaptive(
+            //           activeColor: Theme.of(context).colorScheme.secondary,
             //           value: _showChart,
             //           onChanged: (newValue) {
             //             setState(() {
@@ -230,7 +232,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             if (!_showChart || !isLandscape)
               SizedBox(
-                height: avaibleHeight * 0.7,
+                height: avaibleHeight * (isLandscape ? 1 : 0.7),
                 child: TransactionList(
                   transactions: _transactions,
                   onRemove: _removeList,
@@ -239,11 +241,13 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Theme.of(context).colorScheme.secondary,
-        child: const Icon(Icons.add),
-        onPressed: () => _openTransactionFormModal(context),
-      ),
+      floatingActionButton: Platform.isIOS
+          ? Container()
+          : FloatingActionButton(
+              backgroundColor: Theme.of(context).colorScheme.secondary,
+              child: const Icon(Icons.add),
+              onPressed: () => _openTransactionFormModal(context),
+            ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
