@@ -1,3 +1,6 @@
+import 'package:expenses/components/chart_bar/chart_bar_label.dart';
+import 'package:expenses/components/chart_bar/chart_bar_progress.dart';
+import 'package:expenses/components/chart_bar/chart_bar_value.dart';
 import 'package:flutter/material.dart';
 
 class ChartBar extends StatelessWidget {
@@ -16,50 +19,22 @@ class ChartBar extends StatelessWidget {
     return LayoutBuilder(builder: (ctx, constraints) {
       return Column(
         children: [
-          SizedBox(
-            height: constraints.maxHeight * 0.15,
-            child: FittedBox(
-              child: Text(
-                value.toString(),
-              ),
-            ),
+          ChartBarValue(
+            constraints: constraints,
+            percentageDisplay: 0.15,
+            value: value.toString(),
           ),
           SizedBox(height: constraints.maxHeight * 0.05),
-          SizedBox(
-            height: constraints.maxHeight * 0.6,
-            width: 10,
-            child: Stack(
-              alignment: Alignment.bottomCenter,
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    border: Border.all(
-                      color: Colors.grey,
-                      width: 1.0,
-                    ),
-                    color: const Color.fromRGBO(200, 200, 200, 1),
-                  ),
-                ),
-                FractionallySizedBox(
-                  heightFactor: percentage,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                  ),
-                )
-              ],
-            ),
+          ChartBarProgress(
+            percentageDisplay: 0.6,
+            constraints: constraints,
+            percentage: percentage,
           ),
           SizedBox(height: constraints.maxHeight * 0.05),
-          SizedBox(
-            height: constraints.maxHeight * 0.15,
-            child: FittedBox(
-              child: Text(label),
-            ),
-          ),
+          ChartBarLabel(
+            constraints: constraints,
+            label: label,
+          )
         ],
       );
     });
